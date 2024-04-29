@@ -10,6 +10,7 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/pomerium/pomerium/config"
+	"github.com/pomerium/pomerium/desktopconfig"
 	"github.com/pomerium/pomerium/internal/log"
 	"github.com/pomerium/pomerium/internal/version"
 	zero_cmd "github.com/pomerium/pomerium/internal/zero/cmd"
@@ -18,8 +19,9 @@ import (
 )
 
 var (
-	versionFlag = flag.Bool("version", false, "prints the version")
-	configFile  = flag.String("config", "", "Specify configuration file location")
+	versionFlag  = flag.Bool("version", false, "prints the version")
+	configFile   = flag.String("config", "", "Specify configuration file location")
+	genAppConfig = flag.Bool("genappcfg", false, "Generate config file for Pomerium Desktop App")
 )
 
 func main() {
@@ -27,6 +29,11 @@ func main() {
 	if *versionFlag {
 		fmt.Println("pomerium:", version.FullVersion())
 		fmt.Println("envoy:", files.FullVersion())
+		return
+	}
+
+	if *genAppConfig {
+		desktopconfig.Generate(*configFile)
 		return
 	}
 
